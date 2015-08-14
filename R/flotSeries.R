@@ -59,7 +59,8 @@ flotSeries <- function(flotChart,
                      clickable = F,
                      hoverable = F,
                      shadowSize = NULL,
-                     highlightColor = NULL) { 
+                     highlightColor = NULL,
+                    ...) {
   
   # get a reference to the underlying data and labels
   #data <- attr(flotChart$x, "data")
@@ -102,6 +103,7 @@ flotSeries <- function(flotChart,
     series$hoverable <- hoverable
     series$shadowSize <- shadowSize
     series$highlightColor <- highlightColor
+    series<-mergeLists(series, list(...))
     if(c('extra.cols') %in% names(lst.eval.vars)) {
       tryCatch({
         series$extra_data<-{
@@ -153,6 +155,7 @@ flotSeries <- function(flotChart,
       series.group$hoverable <- hoverable
       series.group$shadowSize <- shadowSize
       series.group$highlightColor <- highlightColor
+      series.group<-mergeLists(series.group, list(...))
       if(c('extra.cols') %in% names(lst.eval.vars)) {
         tryCatch({
           series.group$extra_data<-{

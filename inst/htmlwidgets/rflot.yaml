@@ -43,3 +43,7 @@ dependencies:
     version: 1.0.1
     src: "htmlwidgets/lib/flot"
     script: jquery.flot.title.min.js
+  - name: flot_stack_neg
+    version: 1.0.1
+    src: "htmlwidgets/lib/flot"
+    script: jquery.flot.stackbars.min.js
