@@ -38,23 +38,26 @@ IMPORTANT: Only tested to work properly with bar charts, for other chart types
             if (s.stack_neg == null || !all_bars || !s.bars.show)
                 return;
             var newPoints = [];
+            horizontal = s.bars.horizontal;
+            keyOffset = horizontal ? 1 : 0;
+            accumulateOffset = horizontal ? 0 : 1;
             for (i = 0; i < datapoints.points.length; i += datapoints.pointsize) {
-                if (!stackBases_pos[datapoints.points[i]]) {
-                    stackBases_pos[datapoints.points[i]] = 0;
+                if (!stackBases_pos[datapoints.points[i+keyOffset]]) {
+                    stackBases_pos[datapoints.points[i+keyOffset]] = 0;
                 }
-                if (!stackBases_neg[datapoints.points[i]]) {
-                    stackBases_neg[datapoints.points[i]] = 0;
+                if (!stackBases_neg[datapoints.points[i+keyOffset]]) {
+                    stackBases_neg[datapoints.points[i+keyOffset]] = 0;
                 }
 
-                newPoints[i] = datapoints.points[i];
-                if (datapoints.points[i + 1] > 0) {
-                    newPoints[i + 1] = datapoints.points[i + 1] + stackBases_pos[datapoints.points[i]];
-                    newPoints[i + 2] = stackBases_pos[datapoints.points[i]];
-                    stackBases_pos[datapoints.points[i]] += datapoints.points[i + 1];
+                newPoints[i+keyOffset] = datapoints.points[i+keyOffset];
+                if (datapoints.points[i + accumulateOffset] > 0) {
+                    newPoints[i + accumulateOffset] = datapoints.points[i + accumulateOffset] + stackBases_pos[datapoints.points[i+keyOffset]];
+                    newPoints[i + 2] = stackBases_pos[datapoints.points[i+keyOffset]];
+                    stackBases_pos[datapoints.points[i+keyOffset]] += datapoints.points[i + accumulateOffset];
                 } else {
-                    newPoints[i + 1] = datapoints.points[i + 1] + stackBases_neg[datapoints.points[i]];
-                    newPoints[i + 2] = stackBases_neg[datapoints.points[i]];
-                    stackBases_neg[datapoints.points[i]] += datapoints.points[i + 1];
+                    newPoints[i + accumulateOffset] = datapoints.points[i + accumulateOffset] + stackBases_neg[datapoints.points[i+keyOffset]];
+                    newPoints[i + 2] = stackBases_neg[datapoints.points[i+keyOffset]];
+                    stackBases_neg[datapoints.points[i+keyOffset]] += datapoints.points[i + accumulateOffset];
                 }
             }
             datapoints.points = newPoints;
